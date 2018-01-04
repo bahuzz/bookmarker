@@ -29,6 +29,8 @@ function saveBookmark(e){
 		url: siteUrl
 	}
 
+	if(!validateForm(siteName, siteUrl)) return false;
+
 	// local storage test
 	// localStorage.setItem('test','Hi,bahuzz');
 	// console.log(localStorage.getItem('test'));
@@ -48,6 +50,9 @@ function saveBookmark(e){
 		// ReSet to Local Storage
 		localStorage.setItem('bookmarks',JSON.stringify(bookmarks));
 	}
+	// Clear the form
+
+		document.getElementById('myForm').reset();
 
 	// Refetch bookmarks
 		fetchBookmarks();
@@ -75,3 +80,23 @@ function deleteBookmark(name){
 		fetchBookmarks();
 }
 
+function validateForm(siteName, siteUrl) {
+	// Checking for non-empty fields
+
+	if(!siteName || !siteUrl) {
+		alert("Please, fill all fields!");
+		return false;
+	}
+
+	// Checking url for valid
+
+	var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+	var regex = new RegExp(expression);
+
+	if (!siteUrl.match(regex)) {
+	  alert("Please use a valid url");
+	  return false
+	} 
+
+	return true;
+}
